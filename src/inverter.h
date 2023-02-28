@@ -5,6 +5,7 @@ void serviceInverter();
 bool sendCommand(String com);
 void sendMNCHGC(int val);
 void sendMUCHGC(int val);
+String sendCommandWithResponse(String com);
 
 
 enum qCommand

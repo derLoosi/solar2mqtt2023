@@ -168,6 +168,9 @@ bool sendtoMQTT()
   mqttclient.publish((String(topic) + String("/Device_Data/Current_max_AC_charging_current")).c_str(), String(_qpiriMessage.battMaxAcChrgA).c_str());
   mqttclient.publish((String(topic) + String("/Device_Data/Current_max_charging_current")).c_str(), String(_qpiriMessage.battMaxChrgA).c_str());
 
+  mqttclient.publish((String(topic) + String("/Device_Data/Output_source_priority")).c_str(), String(_qpiriMessage.battMaxChrgA).c_str());
+  mqttclient.publish((String(topic) + String("/Device_Data/Charger_source_priority")).c_str(), String(_qpiriMessage.battMaxChrgA).c_str());
+
 //RAW Messages from Inverter
 #ifdef MQTTDEBUG
   mqttclient.publish((String(topic) + String("/RAW/QPIGS")).c_str(), String(_qRaw.QPIGS).c_str());
@@ -222,8 +225,10 @@ void callback(char *top, byte *payload, unsigned int length)
     if (strcmp(top, (topic + "/Device_Control/Set_Command").c_str()) == 0)
   {
     Serial1.println("Send Command message recived: " + messageTemp);
-    sendCommand(messageTemp);
-      valChange = true;
+    //sendCommand(messageTemp);
+    String commandResponse = sendCommandWithResponse(messageTemp);
+    mqttclient.publish((String(topic) + String("/Device_Control/Set_Command_Response")).c_str(), commandResponse.c_str());
+    valChange = true;
   }
 }
 
