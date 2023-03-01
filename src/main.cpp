@@ -113,6 +113,9 @@ bool sendtoMQTT()
       Serial1.println(F("Reconnected to MQTT SERVER"));
 #endif
       mqttclient.publish((topic + String("/Device Data/IP")).c_str(), String(WiFi.localIP().toString()).c_str());
+      mqttclient.subscribe((String(topic) + String("/Device_Control/AC_Max_Charge_Current")).c_str());
+      mqttclient.subscribe((String(topic) + String("/Device_Control/Max_Charge_Current")).c_str());
+      mqttclient.subscribe((String(topic) + String("/Device_Control/Set_Command")).c_str());
     }
     else
     {
